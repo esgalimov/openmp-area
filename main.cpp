@@ -11,7 +11,7 @@ int main() {
         exit(1);
     }
 
-    Polygon plg;
+    Polygon<double> plg;
     plg.points.reserve(points_num);
     
 
@@ -26,7 +26,7 @@ int main() {
         plg.points.push_back({x, y});
     }
 
-    for (Polygon::Point point : plg.points) {
+    for (Polygon<double>::Point point : plg.points) {
         std::cout << point.x << " " << point.y << std::endl;
     }
 

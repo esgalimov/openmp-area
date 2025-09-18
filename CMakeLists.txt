@@ -13,6 +13,13 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
 endif()
 
-add_executable(area ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp)
+find_package(GTest REQUIRED)
+enable_testing()
 
-target_include_directories(area PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+add_executable(area      ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp)
+add_executable(area_test ${CMAKE_CURRENT_SOURCE_DIR}/test.cpp)
+
+target_link_libraries(area_test PRIVATE ${GTEST_LIBRARIES})
+
+target_include_directories(area PUBLIC      ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(area_test PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
