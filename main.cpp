@@ -1,4 +1,5 @@
 #include <iostream>
+#include <chrono>
 #include "area.hpp"
 
 using namespace polygon;
@@ -26,27 +27,27 @@ int main() {
         plg.points.push_back({x, y});
     }
 
-    for (Polygon<double>::Point point : plg.points) {
-        std::cout << point.x << " " << point.y << std::endl;
-    }
+    
+    omp_set_num_threads(8);
 
-    plg.area();
+    auto start = std::chrono::high_resolution_clock::now();
+    double area = plg.area();
+    double tm = std::chrono::duration_cast<std::chrono::microseconds>(
+                    std::chrono::high_resolution_clock::now() - start).count() / 1000.0;
 
-//     #ifdef CHECK_TIME
-//     auto start = std::chrono::high_resolution_clock::now();
-//     #endif
-//     octotree_t octotree{triangles, max_min_crds};
+    std::cout << "parallel time = " << tm << "ms" << std::endl;
+    std::cout << "parallel area = " << area << " m^2" << std::endl << std::endl;
 
-//     std::set<int> ans = octotree.get_intersections();
 
-//     for (auto it = ans.begin(); it != ans.end(); it++)
-//         std::cout << *it << std::endl;
+    omp_set_num_threads(1);
 
-//     #ifdef CHECK_TIME
-//     const double tm = std::chrono::duration_cast<std::chrono::milliseconds>(
-//                       std::chrono::high_resolution_clock::now() - start).count() / 1000.0;
-//     std::cout << "time = " << tm << "s" << std::endl;
-//    #endif
+    start = std::chrono::high_resolution_clock::now();
+    area = plg.area();
+    tm = std::chrono::duration_cast<std::chrono::microseconds>(
+                    std::chrono::high_resolution_clock::now() - start).count() / 1000.0;
+
+    std::cout << "serial time   = " << tm << "ms" << std::endl;
+    std::cout << "parallel area = " << area << " m^2" << std::endl;
 
     return 0;
 }

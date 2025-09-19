@@ -16,19 +16,14 @@ template <typename T> struct Polygon {
         int n = points.size();
         #pragma omp parallel reduction(+: answer)
         {
-            //int id = omp_get_thread_num();
             #pragma omp for schedule(guided)
             for(int i = 0; i < n; i++) {
                 int plus_one = i != n - 1 ? i + 1 : 0;
                 answer += points[i].x * points[plus_one].y - points[plus_one].x * points[i].y;
-                //printf("Нить: %d, Итерация: %d\n", id, i);
             }
-            //printf("answer: %lf \n", answer);
         }
-        //printf("answer: %lf \n", std::abs(answer) / 2);
         return std::abs(answer) / 2;
     }
-
 };
 
 } // <-- namespace polygon
